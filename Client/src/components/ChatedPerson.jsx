@@ -5,22 +5,29 @@ import { Typography } from '@mui/material';
 function ChatedPerson({
     name,
     message,
+    src,
 
-}) {
+})
+{
+    
     return (
         <div>
-            <Box component="section" sx={{
+            <Box component="section" 
+            // onClick={}
+            sx={{
                 borderBottom: '0.5px solid #f0f0f0',
                 display: 'flex',
                 alignItems: 'center',
                 height: '12vh',
                 possition: 'relative',
                 paddingX: 2,
+                cursor: 'pointer'
             }}>
                 <div
                  className='h-[8vh] w-14'
                 >
                 <Avatar alt="Remy Sharp"
+                    src={src}
                     sx={{
                         margin: 'auto',
                         height: '100%',

@@ -19,10 +19,13 @@ import SearchPage from './SearchPage'
 import NotificationPage from './NotificationPage'
 import Backdrop from './Backdrop'
 import Loaders from './Loaders'
+import AddIcon from '@mui/icons-material/Add';
+import Add from '@mui/icons-material/Add';
 
 
 export default function PrimarySearchAppBar() {
   const [search, setSearch] = React.useState(false)
+  const [addGroup, setAddGroup] = React.useState(false)
   const [notifications, setNotifications] = React.useState(false)
   const arr = ["Profile", "Messages", "Notifications"]
   const menuNumber = 9
@@ -56,6 +59,14 @@ export default function PrimarySearchAppBar() {
 
   const handleNotifications = () => {
     setNotifications((prev) => !prev)
+  }
+
+  const handleAddGroup = () => {
+    console.log(addGroup);
+    
+    setAddGroup((prev) => !prev)
+    console.log(addGroup);
+    
   }
 
 
@@ -158,6 +169,18 @@ export default function PrimarySearchAppBar() {
             >
               HELLO
             </Typography>
+            <Box
+              sx={{
+                paddingX: 20,
+              }}
+            >
+              <AddIcon
+                onClick={handleAddGroup}
+                sx={{
+                  cursor: 'pointer',
+                }}
+              />
+            </Box>
             <Box sx={{ flexGrow: 1 }} />
             <SearchRoundedIcon
               onClick={handleSearch}
@@ -212,14 +235,14 @@ export default function PrimarySearchAppBar() {
         {renderMobileMenu}
         {renderMenu}
       </Box>
-      {search && (
-        <React.Suspense fallback={<Backdrop/>}>
-          <SearchPage />
+      {(search || addGroup || notifications) && (
+        <React.Suspense fallback={<Backdrop />}>
+          <SearchPage opens={false} onClose={true} />
         </React.Suspense>
       )}
       {notifications && (
         <React.Suspense fallback={<Backdrop />}>
-          <NotificationPage />
+          <SearchPage search={false}/>
         </React.Suspense>
       )}
     </>

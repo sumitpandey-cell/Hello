@@ -8,7 +8,6 @@ connect("mongodb://localhost:27017/Chat");
 const app = express();
 const PORT = 8000;
 
-
 //Middleware
 app.use(cors());
 app.use(express.urlencoded({extended: false}));
