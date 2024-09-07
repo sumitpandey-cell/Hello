@@ -3,21 +3,16 @@ import { alpha, Avatar, Box, Grid2, InputBase, styled } from '@mui/material'
 
 
 function MainBox({
-    width,
     className,
     children,
 }) {
     return (
-        <>
-
             <Grid2
                 item xs={4}
-                width={width}
                 className={`${className}`}
                 sx={{
                     height: '100%',
                     position: 'relative',
-                    overflowY: 'scroll',
                 }}
             >
                 <Box
@@ -28,7 +23,7 @@ function MainBox({
                 >
                     {children}
                 </Box>
-            </Grid2></>
+            </Grid2>
     )
 }
 

@@ -5,8 +5,11 @@ import { UsernameValidation, EmailValidation, PasswordValidation } from '../util
 import AddPhotoAlternateTwoToneIcon from '@mui/icons-material/AddPhotoAlternateTwoTone';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { setCurrentUser } from '../features/userSlice';
 
 function Login() {
+    const dispatch = useDispatch()
     const [isLogin, setIsLogin] = useState(false)
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
@@ -58,6 +61,7 @@ function Login() {
             console.log("$$$$$$$$$$$",res);
             
             if(res){
+                dispatch(setCurrentUser(res.data))
                 setIsLogin((prev) => !prev)
             }
         } catch (error) {
@@ -70,12 +74,12 @@ function Login() {
         e.preventDefault();
         const email = e.target[0].value
         const password = e.target[2].value
-        
         try {
             const res = await axios.post('http://localhost:8000/api/login', { email, password });
             console.log(res);
-            if (res) {
-                localStorage.setItem('token', res.data.data)
+            if (res.data.data) {
+                localStorage.setItem('token', res.data.data.token)
+                dispatch(setCurrentUser(res.data.data.payLoad)); // Set the current user in Redux
                 navigate('/')
             }
         } catch (error) {

@@ -1,37 +1,33 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import SearchPage from './SearchPage'
-import NotificationPage from './NotificationPage'
 import Backdrop from './Backdrop'
-import Loaders from './Loaders'
+import Drawer from './Drawer'
 import AddIcon from '@mui/icons-material/Add';
-import Add from '@mui/icons-material/Add';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { useTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import{ useState } from 'react';
 
-
-export default function PrimarySearchAppBar() {
-  const [search, setSearch] = React.useState(false)
+export default function PrimarySearchAppBar({ darkMode, toggleDarkMode, onNewUserSelection }) {
   const [addGroup, setAddGroup] = React.useState(false)
   const [notifications, setNotifications] = React.useState(false)
-  const arr = ["Profile", "Messages", "Notifications"]
+  const arr = [<Drawer/> ]
   const menuNumber = 9
-  const notificationNumber = 17
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [searchPageOpen, setSearchPageOpen] = useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -53,22 +49,17 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleSearch = () => {
-    setSearch((prev) => !prev)
-  }
-
   const handleNotifications = () => {
     setNotifications((prev) => !prev)
   }
 
   const handleAddGroup = () => {
-    console.log(addGroup);
-    
-    setAddGroup((prev) => !prev)
-    console.log(addGroup);
-    
-  }
+    setSearchPageOpen(true);
+  };
 
+  const handleCloseSearchPage = () => {
+    setSearchPageOpen(false);
+  };
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -126,11 +117,16 @@ export default function PrimarySearchAppBar() {
           aria-label="show 18 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
+          <Badge>
+          <AddIcon
+                onClick={handleAddGroup}
+                sx={{
+                  cursor: 'pointer',
+                }}
+              />
           </Badge>
         </IconButton>
-        <p>Notifications</p>
+        <p>Add User</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -148,46 +144,19 @@ export default function PrimarySearchAppBar() {
   );
 
   return (
-    <>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+      <Box component='section' sx={{ flexGrow: 1, minWidth: '100px' }}>
+        <AppBar position="static" color={darkMode ? 'default' : 'primary'}>
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
+            
             <Typography
               variant="h6"
               noWrap
               component="div"
-              sx={{ display: { xs: 'none', sm: 'block' } }}
+              
             >
               HELLO
             </Typography>
-            <Box
-              sx={{
-                paddingX: 20,
-              }}
-            >
-              <AddIcon
-                onClick={handleAddGroup}
-                sx={{
-                  cursor: 'pointer',
-                }}
-              />
-            </Box>
             <Box sx={{ flexGrow: 1 }} />
-            <SearchRoundedIcon
-              onClick={handleSearch}
-              sx={{
-                cursor: 'pointer',
-              }}
-            />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <IconButton size="large" aria-label="show {menuNumber} new mails" color="inherit">
                 <Badge badgeContent={menuNumber} color="error">
@@ -200,10 +169,14 @@ export default function PrimarySearchAppBar() {
                 color="inherit"
                 onClick={handleNotifications}
               >
-                <Badge badgeContent={notificationNumber} color="error">
-                  <NotificationsIcon />
-                </Badge>
+                <AddIcon
+                onClick={handleAddGroup}
+                sx={{
+                  cursor: 'pointer',
+                }}
+              />
               </IconButton>
+              
               <IconButton
                 size="large"
                 edge="end"
@@ -214,6 +187,9 @@ export default function PrimarySearchAppBar() {
                 color="inherit"
               >
                 <AccountCircle />
+              </IconButton>
+              <IconButton color="inherit" onClick={toggleDarkMode}>
+                {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
               </IconButton>
             </Box>
             <Box sx={{
@@ -233,19 +209,20 @@ export default function PrimarySearchAppBar() {
           </Toolbar>
         </AppBar>
         {renderMobileMenu}
+
         {renderMenu}
-      </Box>
-      {(search || addGroup || notifications) && (
-        <React.Suspense fallback={<Backdrop />}>
-          <SearchPage opens={false} onClose={true} />
-        </React.Suspense>
-      )}
+          <React.Suspense fallback={<Backdrop />}>
+            <SearchPage 
+              open={searchPageOpen} 
+              onClose={handleCloseSearchPage} 
+              onNewUserSelection={onNewUserSelection}
+            />
+          </React.Suspense>
       {notifications && (
         <React.Suspense fallback={<Backdrop />}>
           <SearchPage search={false}/>
         </React.Suspense>
       )}
-    </>
-
+      </Box>
   );
 }

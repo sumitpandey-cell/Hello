@@ -36,7 +36,7 @@ const checkEmailAndPassword = async(req, res) => {
 
         res.cookie("token", token, cookieOptions).status(200).json({
             message: 'Login successful',
-            data: token,
+            data: {payLoad, token},
         });
 
     } catch (error) {

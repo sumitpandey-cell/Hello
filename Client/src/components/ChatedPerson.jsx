@@ -6,21 +6,33 @@ function ChatedPerson({
     name,
     message,
     src,
-
+    onclick,
+    status,
+    homeClick,
+    userId
 })
 {
-    
+    const handleClick = async() => {
+        const userData = { name, message, src, userId };
+        
+        if (typeof onclick === 'function') {
+          onclick(userData); // Ensure onClick is a function before calling it
+        }
+        homeClick()
+      };
+
     return (
-        <div>
+        <div
+            onClick={handleClick}
+            
+            className='hover:bg-slate-100 w-full'
+        >
             <Box component="section" 
-            // onClick={}
             sx={{
-                borderBottom: '0.5px solid #f0f0f0',
                 display: 'flex',
                 alignItems: 'center',
                 height: '12vh',
                 possition: 'relative',
-                paddingX: 2,
                 cursor: 'pointer'
             }}>
                 <div
@@ -32,21 +44,38 @@ function ChatedPerson({
                         margin: 'auto',
                         height: '100%',
                         width: '100%',
+                        minWidth: '50px',
                     }}
                 />
                 </div>
                 <Typography
+                    className='flex flex-col'
+                >
+                <Typography
+                noWrap
+                    sx={{
+                        marginX: 2,
+                        fontWeight: 'bold',
+                    }}
+                >
+                    {name}
+                </Typography>
+                <Typography
+                className='text-slate-400'
+                noWrap
                     sx={{
                         marginX: 2,
                     }}
                 >
-                    <h5 className='font-bold'>{name}</h5>
-                    <p className='text-slate-400'>{message}</p>
+                    {message}
                 </Typography>
-                <Typography className='text-slate-400 absolute right-4'>now</Typography>
+                </Typography>
+
+                <Typography className={` absolute right-6 ${status==='online'?"text-red-700":'text-slate-400'}`}>{
+                    status
+                    }</Typography>
             </Box>
         </div>
     )
 }
-
 export default ChatedPerson
