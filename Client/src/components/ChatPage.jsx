@@ -96,15 +96,15 @@ function ChatPage({ conversation, onBackClick }) {
           );
         })}
       </Box>
-      <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
+      <Box sx={{ p: 2, backgroundColor: 'background.default',display: 'flex' }}>
         <TextField
-          fullWidth
+        fullWidth
           variant="outlined"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
         />
-        <Button onClick={handleSendMessage} sx={{ mt: 1 }}>Send</Button>
+        <Button onClick={handleSendMessage} sx={{ mt: 1, backgroundColor: "black" }}>Send</Button>
       </Box>
     </Box>
   );

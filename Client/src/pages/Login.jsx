@@ -91,7 +91,6 @@ function Login() {
 
 
     return (
-        <>
             <Container
                 sx={{
                     display: 'flex',
@@ -100,6 +99,7 @@ function Login() {
                     height: '100vh',
                     width: '35vw',
                     variant: 'outlined',
+                    backgroundColor: 'black'
                 }}
             >
                 <Paper
@@ -240,7 +240,6 @@ function Login() {
                     }
                 </Paper>
             </Container>
-        </>
     )
 }
 

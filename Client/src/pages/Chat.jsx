@@ -30,9 +30,9 @@ function Chat() {
     }
   };
 
-  const receiveMessage = (text) => {
-    setMessages([...messages, { text, type: 'received' }]);
-  };
+  // const receiveMessage = (text) => {
+  //   setMessages([...messages, { text, type: 'received' }]);
+  // };
 
   return (
       <Container>
@@ -60,7 +60,7 @@ function Chat() {
       </div>
 
       {/* Input field and send button */}
-      <div className="flex items-center">
+      <div className="flex flex-row items-center">
         <TextField
           value={message}
           onChange={(e) => setMessage(e.target.value)}
